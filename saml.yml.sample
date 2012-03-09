@@ -1,0 +1,9 @@
+---
+issuer: ruby-saml-sample
+idp_sso_target_url: http://localhost:8080/openam/SSORedirect/metaAlias/idp
+idp_slo_target_url: http://localhost:8080/openam/IDPSloRedirect/metaAlias/idp
+idp_cert_fingerprint: C5:19:85:D9:47:F1:BE:57:08:20:25:05:08:46:EB:27:F6:CA:B7:83
+assertion_consumer_service_url: http://localhost:8888/consume
+slo_response_url: http://localhost:8888/logout/response
+name_identifier_format: urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
+

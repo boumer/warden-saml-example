@@ -17,3 +17,6 @@ tmp
 _yardoc
 doc/
 
+metadata.xml
+saml.yml
+
