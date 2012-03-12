@@ -1,0 +1,9 @@
+%h2 SYNOPSYS
+
+%h2 DEMO
+- if env['warden'].authenticated?
+  %a.btn.btn-danger{:href => "logout_btn"} Logout
+- else
+  %p You're not logged-in.
+  %a.btn.btn-success{:href => "/login"} Login
+  %a.btn.btn-info{:href => "/signup"} Create Account

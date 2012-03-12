@@ -1,0 +1,15 @@
+!!!5
+%body{:lang => 'en'}
+  %head
+    %meta{:charset => 'utf-8'}
+    %title ruby-saml with warden example
+    %link{:href => '/css/bootstrap.css', :rel => 'stylesheet'}
+    %link{:href => '/css/app.css', :rel => 'stylesheet'}
+  %body
+    .container
+      %header
+        %h1 ruby-saml and warden
+      =yield
+    %script{:src => '/js/jquery-1.7.1.min.js', :type => 'text/javascript'}
+    %script{:src => '/js/bootstrap.js', :type => 'text/javascript'}
+    %script{:src => '/js/app.js', :type => 'text/javascript'}

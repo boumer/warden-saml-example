@@ -1,0 +1,28 @@
+- if flash[:notice]
+  .div
+    %span.label.label-important
+      =flash[:notice]
+%h1.center Create new account
+.form_container
+  %form{:action => '/signup', :method => 'POST', :id => 'form_create_account'}
+    %table.user_data
+      %tr
+        %th User Name
+        %td
+          %input{:name => "user[user_name]", :id => "user_name"}
+      %tr
+        %th E-mail Address
+        %td
+          %input{:name => "user[mail_addr]", :id => "mail_addr"}
+      %tr.control-group.password
+        %th Password
+        %td
+          %input{:name => "user[password]", :type => 'password', :id => "password"}
+      %tr.control-group.password
+        %th Password (Confirmation)
+        %td
+          %input{:name => "user[password_confirm]",:type => 'password', :id => "password_confirm"}
+      %tr
+        %td{:colspan => 2, :id => 'submit_btn_container'}
+          %input.btn.btn-success{:id => "signup_sbmt", :type => "submit", :value => "Create User"}
+
