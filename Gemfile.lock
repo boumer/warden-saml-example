@@ -1,6 +1,6 @@
 GIT
   remote: https://hryk@github.com/hryk/ruby-saml.git
-  revision: 0edb80ea5bf888cc3e19b7d1f34972064093c3bb
+  revision: e96584301599f14f9846ec49dfc949632581f21a
   branch: logout
   specs:
     ruby-saml (0.4.7)

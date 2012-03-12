@@ -69,8 +69,62 @@ Warden::Strategies.add(:password) do
   end
 end
 
+module Warden::Strategies
+  class SAML2 < Base
+
+    def authenticate!
+      unless params['SAMLResponse']
+        auth_url = Onelogin::Saml::Authrequest.new.create(saml_settings)
+        env['warden.options'] = auth_url
+        redirect!(auth_url)
+        throw(:warden)
+      else
+        response = Onelogin::Saml::Response.new(params['SAMLResponse'])
+        response.settings = saml_settings
+
+        begin
+          response.validate!
+        rescue => e
+          fail!(e.message)
+        end
+
+        if response.attributes.key?('user_name') && response.attributes.key?('mail_addr')
+          u = User.first_or_create(:name_id => response.name_id)
+          u.mail_addr = response.attributes['mail_addr']
+          u.user_name = response.attributes['user_name']
+          u.auth_method = 'saml2'
+          success!(u)
+        else
+          fail!('Attribute "user_name" or "mail_addr" is missing.')
+        end
+
+      end
+    end
+
+    def saml_settings
+      @saml_settings ||= load_saml_conf('./saml.yml')
+    end
+
+    protected
+
+    def load_saml_conf path
+      settings = Onelogin::Saml::Settings.new
+      config = YAML.load_file path
+
+      config.each do |k, v|
+        settings.__send__ "#{k}=", v
+      end
+
+      settings
+    end
+
+  end
+end
+
+Warden::Strategies.add(:saml2, Warden::Strategies::SAML2)
+
 use Warden::Manager do |manager|
-  manager.default_strategies :password
+  manager.default_strategies :saml2, :password
   manager.failure_app = Sinatra::Application
 end
 
