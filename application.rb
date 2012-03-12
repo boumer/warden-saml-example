@@ -148,9 +148,6 @@ post '/unauthenticated' do
   haml :unauth
 end
 
-get '/login/consume' do
-end
-
 get '/logout' do
   env['warden'].logout
   redirect '/'
