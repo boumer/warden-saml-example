@@ -2,6 +2,7 @@ source "http://rubygems.org/"
 
 gem "rake"
 gem "sinatra", "~> 1.3.2"
+gem "sinatra-contrib", "~> 1.3.1"
 gem "sinatra-flash", "~> 0.3.0"
 gem "haml", "~> 3.1.4"
 gem "warden", "~> 1.1.1"

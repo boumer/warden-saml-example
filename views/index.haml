@@ -2,7 +2,11 @@
 
 %h2 DEMO
 - if env['warden'].authenticated?
-  %a.btn.btn-danger{:href => "logout_btn"} Logout
+  %p You're already logged-in as #{env['warden'].user.user_name}
+  %ul
+    %li User: #{env['warden'].user.user_name}
+    %li Mail Addr: #{env['warden'].user.mail_addr}
+  %a.btn.btn-danger{:href => "/logout"} Logout
 - else
   %p You're not logged-in.
   %a.btn.btn-success{:href => "/login"} Login

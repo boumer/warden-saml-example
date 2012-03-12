@@ -1,0 +1,10 @@
+.login_container
+  %form{:action => '/login', :method => 'post'}
+    %label{:for => 'username'} User:
+    %input{:id => 'username', :name => 'username'}
+    %label{:for => 'password'} Password:
+    %input{:id => 'password', :name => 'password', :type => 'password'}
+    %br
+    #submit_btn_container
+      %input.btn.btn-primary{:type => 'submit'}
+

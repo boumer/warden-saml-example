@@ -30,3 +30,11 @@ table {
   width: 50%;
   margin: 0px auto;
 }
+
+.login_container {
+  width : 200px;
+  margin: 0px auto;
+}
+.login_container label {
+  font-weight: bold;
+}
