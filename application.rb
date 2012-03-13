@@ -75,7 +75,6 @@ module Warden::Strategies
     def authenticate!
       unless params['SAMLResponse']
         auth_url = Onelogin::Saml::Authrequest.new.create(saml_settings)
-        env['warden.options'] = auth_url
         redirect!(auth_url)
         throw(:warden)
       else
@@ -148,6 +147,7 @@ post '/unauthenticated' do
   haml :unauth
 end
 
+## TODO: Support SLO.
 get '/logout' do
   env['warden'].logout
   redirect '/'
