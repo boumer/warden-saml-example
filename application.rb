@@ -24,6 +24,8 @@ class User
   property :password_hash, String, :length => 60
   property :name_id,       String
 
+  attr_accessor :session_index
+
   def password
     @password ||= Password.new(password_hash)
   end
@@ -69,6 +71,7 @@ Warden::Strategies.add(:password) do
   end
 end
 
+# SAML2 Strategy (for Single Sign-On)
 module Warden::Strategies
   class SAML2 < Base
 
@@ -92,6 +95,8 @@ module Warden::Strategies
           u.mail_addr = response.attributes['mail_addr']
           u.user_name = response.attributes['user_name']
           u.auth_method = 'saml2'
+          session[:session_index] = response.session_index
+          session[:saml_settings] = saml_settings
           success!(u)
         else
           fail!('Attribute "user_name" or "mail_addr" is missing.')
@@ -149,11 +154,28 @@ end
 
 ## TODO: Support SLO.
 get '/logout' do
-  env['warden'].logout
-  redirect '/'
+  # Request SLO to IdP before logout warden.
+  saml_settings = session[:saml_settings]
+  saml_settings.name_id = env['warden'].user.name_id
+  saml_settings.session_index = session[:session_index]
+  slo_url = Onelogin::Saml::Logoutrequest.new.create(saml_settings)
+  redirect slo_url
 end
 
 get '/logout/response' do
+  if params['SAMLResponse'] && env['warden'].authenticate?
+    response = Onelogin::Saml::Logoutresponse.new params['SAMLResponse']
+    if response.success?
+      env['warden'].logout
+    else
+      # SLO is failed.
+      redirect '/'
+    end
+  elsif env['warden'].authenticate?
+    # invalid
+    redirect '/'
+  end
+  redirect '/'
 end
 
 ## Show sign-up page for password strategy.

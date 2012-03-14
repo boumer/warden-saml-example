@@ -6,6 +6,7 @@
   %ul
     %li User: #{env['warden'].user.user_name}
     %li Mail Addr: #{env['warden'].user.mail_addr}
+    %li SessionIndex: #{session[:session_index]}
   %a.btn.btn-danger{:href => "/logout"} Logout
 - else
   %p You're not logged-in.
