@@ -5,6 +5,7 @@ idp_slo_target_url: http://idp.example.com/slo_target
 # SHA1 hexdigest of idp_cert.to_der
 idp_cert_fingerprint: 06587751ce11a8703abc64cab55b0b96d88341aa
 assertion_consumer_service_url: http://localhost:8888/login
-slo_response_url: http://localhost:8888/logout
+sp_slo_logout_url: http://localhost:8888/logout
+sp_slo_response_url: http://localhost:8888/logout/response
 name_identifier_format: urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
 

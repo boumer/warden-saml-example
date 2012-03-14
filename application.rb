@@ -59,7 +59,7 @@ DataMapper.auto_migrate!
 # Enable session
 use Rack::Session::Pool, :expire_after => 900
 
-# Configure warden
+# Password Strategy
 Warden::Strategies.add(:password) do
   def valid?
     params["username"] || params["password"]
@@ -127,6 +127,7 @@ end
 
 Warden::Strategies.add(:saml2, Warden::Strategies::SAML2)
 
+# Configure warden.
 use Warden::Manager do |manager|
   manager.default_strategies :saml2, :password
   manager.failure_app = Sinatra::Application
@@ -152,9 +153,8 @@ post '/unauthenticated' do
   haml :unauth
 end
 
-## TODO: Support SLO.
+# Request SLO to IdP before logout warden.
 get '/logout' do
-  # Request SLO to IdP before logout warden.
   saml_settings = session[:saml_settings]
   saml_settings.name_id = env['warden'].user.name_id
   saml_settings.session_index = session[:session_index]
@@ -162,6 +162,7 @@ get '/logout' do
   redirect slo_url
 end
 
+# Receive LogoutResponse from IdP
 get '/logout/response' do
   if params['SAMLResponse'] && env['warden'].authenticate?
     response = Onelogin::Saml::Logoutresponse.new params['SAMLResponse']
@@ -169,11 +170,13 @@ get '/logout/response' do
       env['warden'].logout
     else
       # SLO is failed.
+      flash[:notice] = "Single logout is failed."
       redirect '/'
     end
   elsif env['warden'].authenticate?
     # invalid
-    redirect '/'
+    flash[:notice] = "You're not logged-in."
+    redirect '/login'
   end
   redirect '/'
 end
