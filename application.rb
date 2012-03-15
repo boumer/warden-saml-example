@@ -220,4 +220,3 @@ get '/welcome' do
   haml :welcome
 end
 
-

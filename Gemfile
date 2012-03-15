@@ -18,5 +18,10 @@ gem "dm-sqlite-adapter", DM_VERSION
 gem "dm-migrations",     DM_VERSION
 
 group :develop do
-  gem "unicorn"
+  if RUBY_PLATFORM =~ /java/
+    gem "mizuno"
+    gem "jruby-openssl"
+  else
+    gem "unicorn"
+  end
 end
