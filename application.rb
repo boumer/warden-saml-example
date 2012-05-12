@@ -75,6 +75,7 @@ end
 module Warden::Strategies
   class SAML2 < Base
 
+
     def authenticate!
       unless params['SAMLResponse']
         auth_url = Onelogin::Saml::Authrequest.new.create(saml_settings)
